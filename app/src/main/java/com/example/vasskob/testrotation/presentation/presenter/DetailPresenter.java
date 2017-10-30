@@ -1,90 +1,66 @@
 package com.example.vasskob.testrotation.presentation.presenter;
 
-import android.util.Log;
-
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
 import com.example.vasskob.testrotation.data.repository.ProductDataRepository;
-import com.example.vasskob.testrotation.data.repository.StoreDataRepository;
-import com.example.vasskob.testrotation.domain.entity.Product;
 import com.example.vasskob.testrotation.presentation.mapper.ProductDataMapper;
-import com.example.vasskob.testrotation.presentation.model.ProductModel;
-import com.example.vasskob.testrotation.presentation.view.DetailView;
+import com.example.vasskob.testrotation.presentation.view.detail.DetailView;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
-import java.util.List;
-
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+@InjectViewState
+public class DetailPresenter extends MvpPresenter<DetailView> {
 
-public class DetailPresenter implements IDetailPresenter {
-    private static final String TAG = DetailPresenter.class.getSimpleName();
-    private final int position;
-    private DetailView mView;
-    private Subscription subscription;
+    private final ProductDataRepository mProductDataRepository;
+    private CompositeDisposable mCompositeDisposable;
 
-    public DetailPresenter(int position) {
-        this.position = position;
+    public DetailPresenter(ProductDataRepository productDataRepository) {
+        mProductDataRepository = productDataRepository;
+        mCompositeDisposable = new CompositeDisposable();
     }
 
-    @Override
-    public void loadData() {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-
-        subscription = new StoreDataRepository()
-                .stores()
+    public void checkConnection(long storeId) {
+        ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
-                .flatMapIterable(stores -> stores)
-                .flatMap(store -> getProductsForStore(store.getId()))
-                .map(products -> new ProductDataMapper().transform(products))
-                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MySubscriber());
-
-//        subscription = RetrofitSingleton.getStoreObservable()
-//                .subscribeOn(Schedulers.io())
-//                .flatMapIterable(stores -> stores)
-//                .flatMap(store -> getProductsForStore(store.getId()))
-//                .toList()
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new MySubscriber());
+                .doOnSubscribe(this::addDisposable)
+                .subscribe(isConnectedToInternet -> {
+                    if (isConnectedToInternet) {
+                        getViewState().showConnectionSuccessToast();
+                        loadProductInStore(storeId);
+                    } else getViewState().showConnectionFailedToast();
+                });
     }
 
-    private Observable<List<Product>> getProductsForStore(long id) {
-        return new ProductDataRepository().products(id);
+    private void addDisposable(Disposable disposable) {
+        mCompositeDisposable.add(disposable);
+    }
+
+    private void loadProductInStore(long storeId) {
+        mProductDataRepository.getProducts(storeId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> {
+                    addDisposable(disposable);
+                    getViewState().startLoadingProgress();
+                })
+                .doAfterTerminate(getViewState()::stopLoadingProgress)
+                .map(products -> new ProductDataMapper().transform(products))
+                .subscribe(
+                        getViewState()::onProductLoadSuccess,
+                        throwable -> getViewState().onProductLoadError());
     }
 
     @Override
-    public void detachView() {
-        mView = null;
-    }
-
-    @Override
-    public void attachView(DetailView view) {
-        mView = view;
-    }
-
-    private class MySubscriber extends Subscriber<List<List<ProductModel>>> {
-        @Override
-        public void onCompleted() {
-            mView.showLoadingSuccessToast();
-            Log.d(TAG, "My onCompleted");
+    public void onDestroy() {
+        if (!mCompositeDisposable.isDisposed()) {
+            mCompositeDisposable.dispose();
+            mCompositeDisposable.clear();
         }
-
-        @Override
-        public void onError(Throwable e) {
-            mView.showLoadingErrorToast();
-            Log.e(TAG, "My onError: ", e);
-        }
-
-        @Override
-        public void onNext(List<List<ProductModel>> listProductsList) {
-            mView.showProductList(listProductsList.get(position));
-
-        }
+        super.onDestroy();
     }
 }

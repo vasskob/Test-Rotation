@@ -1,102 +1,67 @@
 package com.example.vasskob.testrotation.presentation.presenter;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.example.vasskob.testrotation.data.repository.CombinedDataRepository;
-import com.example.vasskob.testrotation.presentation.mapper.ShopVsProductDataMapper;
-import com.example.vasskob.testrotation.presentation.model.ProductModel;
-import com.example.vasskob.testrotation.presentation.model.SpecialStoreModel;
-import com.example.vasskob.testrotation.presentation.model.StoreModel;
-import com.example.vasskob.testrotation.presentation.model.StoreVsProductModel;
-import com.example.vasskob.testrotation.presentation.view.MainView;
-
-import org.reactivestreams.Subscription;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
+import com.example.vasskob.testrotation.data.repository.StoreDataRepository;
+import com.example.vasskob.testrotation.presentation.mapper.ShopDataMapper;
+import com.example.vasskob.testrotation.presentation.view.main.MainView;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
+@InjectViewState
+public class MainPresenter extends MvpPresenter<MainView> {
 
-public class MainPresenter implements IMainPresenter {
+    private StoreDataRepository mStoreDataRepository;
+    private CompositeDisposable mCompositeDisposable;
 
-    private static final String TAG = MainPresenter.class.getSimpleName();
-    private static final String CITY = " city";
-    private static final String FILTER_STRING = "a";
-    private static final String MODIFIER = " !";
-    private MainView mView;
-    private Subscription subscription;
+    public MainPresenter(StoreDataRepository storeDataRepository) {
+        this.mStoreDataRepository = storeDataRepository;
+        mCompositeDisposable = new CompositeDisposable();
+        Timber.d("checkConnection: " + getViewState());
+    }
 
-    @Override
-    public void loadData() {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-
-        subscription = new CombinedDataRepository()
-                .storesVsProducts()
+    public void checkConnection() {
+        ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
-                .map(storeVsProducts -> new ShopVsProductDataMapper().transform(storeVsProducts))
-                .map(this::getSpecialStores)
-                .flatMapIterable(specialStores -> specialStores)
-                .filter(specialStore -> specialStore.getCity().contains(FILTER_STRING))
-                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new MySubscriber());
+                .subscribe(isConnectedToInternet -> {
+                    if (isConnectedToInternet) {
+                        getViewState().showConnectionSuccessToast();
+                        loadShopList();
+                    } else getViewState().showConnectionFailedToast();
+                });
     }
 
-    @NonNull
-    private List<SpecialStoreModel> getSpecialStores(List<StoreVsProductModel> storeVsProductList) {
-        List<SpecialStoreModel> specialStoreList = new ArrayList<>();
-        if (storeVsProductList != null && !storeVsProductList.isEmpty()) {
-            for (StoreVsProductModel storeVsProduct : storeVsProductList) {
-                StoreModel store = storeVsProduct.getStore();
-                ProductModel product = storeVsProduct.getProduct();
-                specialStoreList.add(new SpecialStoreModel(store.getId(), store.getName() + MODIFIER, store.getCity() + CITY, store.getAddress1(), product.getName()));
-            }
-        }
-        return specialStoreList;
+    private void loadShopList() {
+        mStoreDataRepository.getStores()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> {
+                    addDisposable(disposable);
+                    getViewState().startLoadingProgress();
+                })
+                .doAfterTerminate(getViewState()::stopLoadingProgress)
+                .map(stores -> new ShopDataMapper().transform(stores))
+                .subscribe(
+                        getViewState()::onShopLoadSuccess,
+                        throwable -> getViewState().onShopLoadError());
+    }
+
+    private void addDisposable(Disposable disposable) {
+        mCompositeDisposable.add(disposable);
     }
 
     @Override
-    public void attachView(MainView view) {
-        mView = view;
-    }
-
-    @Override
-    public void detachView() {
-        mView = null;
-        unSubscribe();
-    }
-
-    private void unSubscribe() {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+    public void onDestroy() {
+        if (!mCompositeDisposable.isDisposed()) {
+            mCompositeDisposable.dispose();
+            mCompositeDisposable.clear();
         }
-    }
-
-    private class MySubscriber extends Subscriber<List<SpecialStoreModel>> {
-
-        @Override
-        public void onCompleted() {
-            mView.showLoadingSuccessToast();
-            Log.d(TAG, "onCompleted: ");
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            mView.showLoadingErrorToast();
-            Log.e(TAG, "My onError: ", e);
-        }
-
-        @Override
-        public void onNext(List<SpecialStoreModel> stores) {
-            int prevSize = stores.size();
-            Log.d(TAG, "onNext: " + prevSize);
-            mView.showStoreList(stores);
-        }
-
+        super.onDestroy();
     }
 }

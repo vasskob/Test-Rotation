@@ -1,7 +1,7 @@
 package com.example.vasskob.testrotation.presentation.mapper;
 
 
-import com.example.vasskob.testrotation.domain.entity.Product;
+import com.example.vasskob.testrotation.domain.dto.Product;
 import com.example.vasskob.testrotation.presentation.model.ProductModel;
 
 import java.util.ArrayList;

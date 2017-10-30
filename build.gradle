@@ -44,6 +44,7 @@ ext {
 
     rxJavaVersion = '2.1.1'
     rxAndroidVersion = '2.0.1'
+    rxNetworkVersion = '0.12.1'
 
     moxyVersion = '1.5.3'
 

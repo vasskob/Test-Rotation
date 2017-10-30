@@ -1,13 +1,13 @@
 package com.example.vasskob.testrotation.domain.repository;
 
 
-import com.example.vasskob.testrotation.domain.entity.Store;
+import com.example.vasskob.testrotation.domain.dto.Store;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 
 public interface StoreRepository {
-    Observable<List<Store>> stores();
+    Single<List<Store>> getStores();
 }
