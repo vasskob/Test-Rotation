@@ -18,6 +18,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private StoreDataRepository mStoreDataRepository;
     private CompositeDisposable mCompositeDisposable;
+    private boolean dataLoaded;
 
     public MainPresenter(StoreDataRepository storeDataRepository) {
         this.mStoreDataRepository = storeDataRepository;
@@ -38,8 +39,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(isConnectedToInternet -> {
                     if (isConnectedToInternet) {
-                        getViewState().showConnectionSuccessToast();
-                        loadShopList();
+                        if (!dataLoaded) {
+                            getViewState().showConnectionSuccessToast();
+                            loadShopList();
+                        }
                     } else {
                         getViewState().showConnectionFailedToast();
                         getViewState().stopLoadingProgress();
@@ -60,12 +63,17 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 .subscribe(storeModels -> {
                             getViewState().showShopList(storeModels);
                             getViewState().onShopLoadSuccess();
+                            dataLoaded = true;
                         },
                         throwable -> getViewState().onShopLoadError());
     }
 
     private void addDisposable(Disposable disposable) {
         mCompositeDisposable.add(disposable);
+    }
+
+    public void setDataLoadedFalse() {
+        dataLoaded = false;
     }
 
     @Override

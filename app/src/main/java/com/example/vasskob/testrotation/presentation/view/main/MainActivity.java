@@ -83,7 +83,7 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public void onShopLoadSuccess() {
         Timber.d("onShopLoadSuccess: ");
-        showToast(R.string.data_load_success);
+        showToast(R.string.stores_load_success);
     }
 
     @Override
@@ -119,6 +119,7 @@ public class MainActivity extends BaseActivity implements MainView {
         switch (itemId) {
             case R.id.item_update:
                 mAdapter.clearItems();
+                mPresenter.setDataLoadedFalse();
                 starLoadData();
                 break;
             default:

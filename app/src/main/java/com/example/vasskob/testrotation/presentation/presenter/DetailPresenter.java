@@ -18,6 +18,7 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
 
     private final ProductDataRepository mProductDataRepository;
     private CompositeDisposable mCompositeDisposable;
+    private boolean dataLoaded;
 
     public DetailPresenter(ProductDataRepository productDataRepository) {
         mProductDataRepository = productDataRepository;
@@ -38,8 +39,10 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                 .doOnSubscribe(this::addDisposable)
                 .subscribe(isConnectedToInternet -> {
                     if (isConnectedToInternet) {
-                        getViewState().showConnectionSuccessToast();
-                        loadProductInStore(storeId);
+                        if (!dataLoaded) {
+                            getViewState().showConnectionSuccessToast();
+                            loadProductInStore(storeId);
+                        }
                     } else {
                         getViewState().showConnectionFailedToast();
                         getViewState().stopLoadingProgress();
@@ -64,6 +67,7 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                 .subscribe(productModels -> {
                             getViewState().showProducts(productModels);
                             getViewState().onProductLoadSuccess();
+                            dataLoaded = true;
                         },
                         throwable -> getViewState().onProductLoadError());
     }

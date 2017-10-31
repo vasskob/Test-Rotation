@@ -82,7 +82,7 @@ public class DetailActivity extends BaseActivity implements DetailView {
     @Override
     public void onProductLoadSuccess() {
         Timber.d("onProductLoadSuccess: ");
-        showToast(R.string.data_load_success);
+        showToast(R.string.products_load_success);
     }
 
     @Override
