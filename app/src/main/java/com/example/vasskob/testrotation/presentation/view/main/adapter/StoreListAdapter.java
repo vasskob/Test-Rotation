@@ -16,9 +16,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class StoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.StoreViewHolder> {
 
-    private static final String COMA = ", ";
+    private static final String COMMA = ", ";
     private List<Store> mStores = new ArrayList<>();
     private final onStoreClickListener listener;
 
@@ -32,19 +32,14 @@ public class StoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StoreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_store, parent, false);
         return new StoreViewHolder(v, listener);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        StoreViewHolder storeHolder = (StoreViewHolder) holder;
-        if (mStores != null) {
-            Store store = mStores.get(position);
-            storeHolder.storeName.setText(store.getName());
-            storeHolder.storeLocation.setText(String.format("%s%s%s", store.getCity(), COMA, store.getAddress1()));
-        }
+    public void onBindViewHolder(StoreViewHolder holder, int position) {
+        if (mStores != null) holder.populate(mStores.get(position));
     }
 
     @Override
@@ -81,6 +76,11 @@ public class StoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(v);
             ButterKnife.bind(this, v);
             mOnStoreClickListener = listener;
+        }
+
+        void populate(Store store) {
+            storeName.setText(store.getName());
+            storeLocation.setText(String.format("%s%s%s", store.getCity(), COMMA, store.getAddress1()));
         }
     }
 

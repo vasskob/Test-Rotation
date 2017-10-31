@@ -14,6 +14,7 @@ import com.example.vasskob.testrotation.domain.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductViewHolder> {
 
-    private  List<Product> mProducts = new ArrayList<>();
+    private List<Product> mProducts = new ArrayList<>();
     private final Context context;
 
     public ProductListAdapter(Context context) {
@@ -41,15 +42,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
-        if (mProducts != null) {
-            Product product = mProducts.get(position);
-            holder.productName.setText(product.getName());
-            holder.productPrice.setText("Price: " + product.getPriceInCents() / 100 + " $");
-            holder.productCategory.setText("Category: " + product.getPrimaryCategory() + "");
-            Glide.with(context)
-                    .load(product.getImageUrl())
-                    .into(holder.productIcon);
-        }
+        if (mProducts != null) holder.populate(mProducts.get(position));
     }
 
     @Override
@@ -73,6 +66,15 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         ProductViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
+        }
+
+        void populate(Product product) {
+            productName.setText(product.getName());
+            productPrice.setText(String.format(Locale.US, "Price: %d $", product.getPriceInCents() / 100));
+            productCategory.setText(String.format(Locale.US, "Category: %s", product.getPrimaryCategory()));
+            Glide.with(context)
+                    .load(product.getImageUrl())
+                    .into(productIcon);
         }
     }
 }
