@@ -1,6 +1,6 @@
-package com.example.vasskob.testrotation.presentation.model;
+package com.example.vasskob.testrotation.domain.model;
 
-public class StoreModel {
+public class Store {
 
     private long id;
     private String name;

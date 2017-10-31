@@ -2,23 +2,25 @@ package com.example.vasskob.testrotation.data.repository;
 
 import com.example.vasskob.testrotation.data.api.ApiInterface;
 import com.example.vasskob.testrotation.data.api.ApiResponse;
-import com.example.vasskob.testrotation.domain.dto.Store;
-import com.example.vasskob.testrotation.domain.dto.maper.ShopEntityDataMapper;
+import com.example.vasskob.testrotation.data.entity.maper.StoreEntityDataMapper;
+import com.example.vasskob.testrotation.domain.model.Store;
 import com.example.vasskob.testrotation.domain.repository.StoreRepository;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 
-public class StoreDataRepository implements StoreRepository {
+public class StoreRepositoryImpl implements StoreRepository {
 
     private final ApiInterface mApi;
+    private final StoreEntityDataMapper mStoreEntityDataMapper = new StoreEntityDataMapper();
 
     @Inject
-    public StoreDataRepository(ApiInterface mApi) {
+    public StoreRepositoryImpl(ApiInterface mApi) {
         this.mApi = mApi;
     }
 
@@ -27,6 +29,8 @@ public class StoreDataRepository implements StoreRepository {
         return mApi
                 .loadStores()
                 .map(ApiResponse::getData)
-                .map(storeEntities -> new ShopEntityDataMapper().transform(storeEntities));
+                .flatMapObservable(Observable::fromIterable)
+                .map(mStoreEntityDataMapper)
+                .toList();
     }
 }

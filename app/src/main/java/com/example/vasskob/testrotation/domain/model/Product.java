@@ -1,4 +1,4 @@
-package com.example.vasskob.testrotation.domain.dto;
+package com.example.vasskob.testrotation.domain.model;
 
 public class Product {
 

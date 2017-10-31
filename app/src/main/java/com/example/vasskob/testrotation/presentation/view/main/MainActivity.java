@@ -13,9 +13,9 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.PresenterType;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.vasskob.testrotation.R;
-import com.example.vasskob.testrotation.data.repository.StoreDataRepository;
+import com.example.vasskob.testrotation.data.repository.StoreRepositoryImpl;
+import com.example.vasskob.testrotation.domain.model.Store;
 import com.example.vasskob.testrotation.global.Constants;
-import com.example.vasskob.testrotation.presentation.model.StoreModel;
 import com.example.vasskob.testrotation.presentation.presenter.MainPresenter;
 import com.example.vasskob.testrotation.presentation.view.common.BaseActivity;
 import com.example.vasskob.testrotation.presentation.view.detail.DetailActivity;
@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity implements MainView {
     ProgressBar pbLoading;
 
     @Inject
-    StoreDataRepository mStoreDataRepository;
+    StoreRepositoryImpl mStoreDataRepository;
 
     @InjectPresenter(type = PresenterType.LOCAL)
     MainPresenter mPresenter;
@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
-    public void showShopList(List<StoreModel> storeList) {
+    public void showShopList(List<Store> storeList) {
         Timber.d("showShopList: ");
         mAdapter.addItems(storeList);
     }

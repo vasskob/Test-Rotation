@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.vasskob.testrotation.R;
-import com.example.vasskob.testrotation.presentation.model.ProductModel;
+import com.example.vasskob.testrotation.domain.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +21,14 @@ import butterknife.ButterKnife;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductViewHolder> {
 
-    private  List<ProductModel> mProducts = new ArrayList<>();
+    private  List<Product> mProducts = new ArrayList<>();
     private final Context context;
 
     public ProductListAdapter(Context context) {
         this.context = context;
     }
 
-    public void addItems(List<ProductModel> productList) {
+    public void addItems(List<Product> productList) {
         mProducts = productList;
         notifyDataSetChanged();
     }
@@ -42,7 +42,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         if (mProducts != null) {
-            ProductModel product = mProducts.get(position);
+            Product product = mProducts.get(position);
             holder.productName.setText(product.getName());
             holder.productPrice.setText("Price: " + product.getPriceInCents() / 100 + " $");
             holder.productCategory.setText("Category: " + product.getPrimaryCategory() + "");

@@ -1,6 +1,6 @@
 package com.example.vasskob.testrotation.domain.repository;
 
-import com.example.vasskob.testrotation.domain.dto.Product;
+import com.example.vasskob.testrotation.domain.model.Product;
 
 import java.util.List;
 

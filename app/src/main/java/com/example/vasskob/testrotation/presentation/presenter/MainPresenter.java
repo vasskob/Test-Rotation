@@ -2,8 +2,7 @@ package com.example.vasskob.testrotation.presentation.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.example.vasskob.testrotation.data.repository.StoreDataRepository;
-import com.example.vasskob.testrotation.presentation.mapper.ShopDataMapper;
+import com.example.vasskob.testrotation.data.repository.StoreRepositoryImpl;
 import com.example.vasskob.testrotation.presentation.view.main.MainView;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
@@ -16,11 +15,11 @@ import timber.log.Timber;
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
 
-    private StoreDataRepository mStoreDataRepository;
+    private StoreRepositoryImpl mStoreDataRepository;
     private CompositeDisposable mCompositeDisposable;
     private boolean dataLoaded;
 
-    public MainPresenter(StoreDataRepository storeDataRepository) {
+    public MainPresenter(StoreRepositoryImpl storeDataRepository) {
         this.mStoreDataRepository = storeDataRepository;
         mCompositeDisposable = new CompositeDisposable();
         Timber.d("checkConnection: " + getViewState());
@@ -59,7 +58,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     getViewState().startLoadingProgress();
                 })
                 .doAfterTerminate(getViewState()::stopLoadingProgress)
-                .map(stores -> new ShopDataMapper().transform(stores))
                 .subscribe(storeModels -> {
                             getViewState().showShopList(storeModels);
                             getViewState().onShopLoadSuccess();

@@ -2,8 +2,8 @@ package com.example.vasskob.testrotation.presentation.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.example.vasskob.testrotation.data.repository.ProductDataRepository;
-import com.example.vasskob.testrotation.presentation.mapper.ProductDataMapper;
+import com.example.vasskob.testrotation.data.repository.ProductRepositoryImpl;
+
 import com.example.vasskob.testrotation.presentation.view.detail.DetailView;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
@@ -16,11 +16,11 @@ import timber.log.Timber;
 @InjectViewState
 public class DetailPresenter extends MvpPresenter<DetailView> {
 
-    private final ProductDataRepository mProductDataRepository;
+    private final ProductRepositoryImpl mProductDataRepository;
     private CompositeDisposable mCompositeDisposable;
     private boolean dataLoaded;
 
-    public DetailPresenter(ProductDataRepository productDataRepository) {
+    public DetailPresenter(ProductRepositoryImpl productDataRepository) {
         mProductDataRepository = productDataRepository;
         mCompositeDisposable = new CompositeDisposable();
     }
@@ -63,7 +63,6 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                     getViewState().startLoadingProgress();
                 })
                 .doAfterTerminate(getViewState()::stopLoadingProgress)
-                .map(products -> new ProductDataMapper().transform(products))
                 .subscribe(productModels -> {
                             getViewState().showProducts(productModels);
                             getViewState().onProductLoadSuccess();

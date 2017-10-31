@@ -11,9 +11,9 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.PresenterType;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.vasskob.testrotation.R;
-import com.example.vasskob.testrotation.data.repository.ProductDataRepository;
+import com.example.vasskob.testrotation.data.repository.ProductRepositoryImpl;
+import com.example.vasskob.testrotation.domain.model.Product;
 import com.example.vasskob.testrotation.global.Constants;
-import com.example.vasskob.testrotation.presentation.model.ProductModel;
 import com.example.vasskob.testrotation.presentation.presenter.DetailPresenter;
 import com.example.vasskob.testrotation.presentation.view.common.BaseActivity;
 import com.example.vasskob.testrotation.presentation.view.detail.adapter.ProductListAdapter;
@@ -40,7 +40,7 @@ public class DetailActivity extends BaseActivity implements DetailView {
     ProgressBar pbLoading;
 
     @Inject
-    ProductDataRepository mProductDataRepository;
+    ProductRepositoryImpl mProductDataRepository;
 
     @InjectPresenter(type = PresenterType.LOCAL)
     DetailPresenter mPresenter;
@@ -74,7 +74,7 @@ public class DetailActivity extends BaseActivity implements DetailView {
     }
 
     @Override
-    public void showProducts(List<ProductModel> productList) {
+    public void showProducts(List<Product> productList) {
         Timber.d("showProducts: ");
         mAdapter.addItems(productList);
     }

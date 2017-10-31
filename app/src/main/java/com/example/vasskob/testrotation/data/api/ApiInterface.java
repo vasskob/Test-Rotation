@@ -24,8 +24,4 @@ public interface ApiInterface {
     @GET("stores/{id}/products")
     @Headers(AUTH_TOKEN)
     Single<ApiResponse<List<ProductEntity>>> loadProductsInStore(@Path("id") long storeId);
-
-//  @GET("products")
-//  @Headers(AUTH_TOKEN)
-//  Observable<ApiResponse<List<ProductEntity>>> loadAllProducts();
 }

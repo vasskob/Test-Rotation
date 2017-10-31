@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.vasskob.testrotation.R;
-import com.example.vasskob.testrotation.presentation.model.StoreModel;
+import com.example.vasskob.testrotation.domain.model.Store;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +19,14 @@ import butterknife.OnClick;
 public class StoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String COMA = ", ";
-    private List<StoreModel> mStores = new ArrayList<>();
+    private List<Store> mStores = new ArrayList<>();
     private final onStoreClickListener listener;
 
     public StoreListAdapter(onStoreClickListener listener) {
         this.listener = listener;
     }
 
-    public void addItems(List<StoreModel> stores) {
+    public void addItems(List<Store> stores) {
         mStores = stores;
         notifyDataSetChanged();
     }
@@ -41,7 +41,7 @@ public class StoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         StoreViewHolder storeHolder = (StoreViewHolder) holder;
         if (mStores != null) {
-            StoreModel store = mStores.get(position);
+            Store store = mStores.get(position);
             storeHolder.storeName.setText(store.getName());
             storeHolder.storeLocation.setText(String.format("%s%s%s", store.getCity(), COMA, store.getAddress1()));
         }
@@ -54,7 +54,7 @@ public class StoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else return 0;
     }
 
-    public StoreModel getItem(int position) {
+    public Store getItem(int position) {
         return mStores.get(position);
     }
 
