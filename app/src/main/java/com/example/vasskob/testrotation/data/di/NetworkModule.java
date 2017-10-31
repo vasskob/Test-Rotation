@@ -4,7 +4,7 @@ import android.os.SystemClock;
 
 import com.example.vasskob.testrotation.BuildConfig;
 import com.example.vasskob.testrotation.data.api.ApiInterface;
-import com.example.vasskob.testrotation.global.Constants;
+import com.example.vasskob.testrotation.data.api.HeaderInterceptor;
 import com.google.gson.Gson;
 
 import java.util.concurrent.TimeUnit;
@@ -45,6 +45,7 @@ public class NetworkModule {
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .addInterceptor(httpLoggingInterceptor)
                 .addInterceptor(delayInterceptor)
+                .addInterceptor(new HeaderInterceptor())
                 .build();
     }
 
@@ -52,7 +53,7 @@ public class NetworkModule {
     @Singleton
     Retrofit provideRetrofit(OkHttpClient client) {
         return new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
+                .baseUrl(BuildConfig.BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
