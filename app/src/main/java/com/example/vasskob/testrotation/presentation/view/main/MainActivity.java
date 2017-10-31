@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -12,7 +14,6 @@ import com.arellomobile.mvp.presenter.PresenterType;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.vasskob.testrotation.R;
 import com.example.vasskob.testrotation.data.repository.StoreDataRepository;
-
 import com.example.vasskob.testrotation.global.Constants;
 import com.example.vasskob.testrotation.presentation.model.StoreModel;
 import com.example.vasskob.testrotation.presentation.presenter.MainPresenter;
@@ -62,9 +63,9 @@ public class MainActivity extends BaseActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        Timber.d("onCreate: ");
 
         initAdapter();
-        mPresenter.checkConnection();
     }
 
     private void initAdapter() {
@@ -74,9 +75,14 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
-    public void onShopLoadSuccess(List<StoreModel> storeList) {
-        Timber.d("onShopLoadSuccess: " + storeList);
+    public void showShopList(List<StoreModel> storeList) {
+        Timber.d("showShopList: ");
         mAdapter.addItems(storeList);
+    }
+
+    @Override
+    public void onShopLoadSuccess() {
+        Timber.d("onShopLoadSuccess: ");
         showToast(R.string.data_load_success);
     }
 
@@ -86,13 +92,38 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
-    public void startLoadingProgress() {
-        pbLoading.setVisibility(View.VISIBLE);
+    public void starLoadData() {
+        mPresenter.checkConnection();
+    }
 
+    @Override
+    public void startLoadingProgress() {
+        Timber.d("startLoadingProgress: ");
+        pbLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void stopLoadingProgress() {
         pbLoading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case R.id.item_update:
+                mAdapter.clearItems();
+                starLoadData();
+                break;
+            default:
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

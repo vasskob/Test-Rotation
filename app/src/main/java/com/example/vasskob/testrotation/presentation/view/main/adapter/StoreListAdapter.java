@@ -58,6 +58,11 @@ public class StoreListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return mStores.get(position);
     }
 
+    public void clearItems() {
+        mStores.clear();
+        notifyDataSetChanged();
+    }
+
     class StoreViewHolder extends RecyclerView.ViewHolder {
 
         private final onStoreClickListener mOnStoreClickListener;

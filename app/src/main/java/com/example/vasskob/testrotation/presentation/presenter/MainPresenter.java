@@ -25,6 +25,13 @@ public class MainPresenter extends MvpPresenter<MainView> {
         Timber.d("checkConnection: " + getViewState());
     }
 
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        Timber.d("onFirstViewAttach: ");
+        getViewState().starLoadData();
+    }
+
     public void checkConnection() {
         ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
@@ -33,7 +40,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     if (isConnectedToInternet) {
                         getViewState().showConnectionSuccessToast();
                         loadShopList();
-                    } else getViewState().showConnectionFailedToast();
+                    } else {
+                        getViewState().showConnectionFailedToast();
+                        getViewState().stopLoadingProgress();
+                    }
                 });
     }
 
@@ -47,8 +57,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 })
                 .doAfterTerminate(getViewState()::stopLoadingProgress)
                 .map(stores -> new ShopDataMapper().transform(stores))
-                .subscribe(
-                        getViewState()::onShopLoadSuccess,
+                .subscribe(storeModels -> {
+                            getViewState().showShopList(storeModels);
+                            getViewState().onShopLoadSuccess();
+                        },
                         throwable -> getViewState().onShopLoadError());
     }
 

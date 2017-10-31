@@ -58,12 +58,11 @@ public class DetailActivity extends BaseActivity implements DetailView {
 
         fetchIntent();
         initAdapter();
-        mPresenter.checkConnection(storeId);
-     }
+    }
 
     private void fetchIntent() {
         Bundle extras = getIntent().getExtras();
-        if (extras!=null) {
+        if (extras != null) {
             storeId = extras.getLong(Constants.STORE_ID);
         }
     }
@@ -75,9 +74,14 @@ public class DetailActivity extends BaseActivity implements DetailView {
     }
 
     @Override
-    public void onProductLoadSuccess(List<ProductModel> productList) {
-        Timber.d("onProductLoadSuccess: " + productList);
+    public void showProducts(List<ProductModel> productList) {
+        Timber.d("showProducts: ");
         mAdapter.addItems(productList);
+    }
+
+    @Override
+    public void onProductLoadSuccess() {
+        Timber.d("onProductLoadSuccess: ");
         showToast(R.string.data_load_success);
     }
 
@@ -87,7 +91,13 @@ public class DetailActivity extends BaseActivity implements DetailView {
     }
 
     @Override
+    public void starLoadData() {
+        mPresenter.checkConnection(storeId);
+    }
+
+    @Override
     public void startLoadingProgress() {
+        Timber.d("startLoadingProgress: ");
         pbLoading.setVisibility(View.VISIBLE);
     }
 

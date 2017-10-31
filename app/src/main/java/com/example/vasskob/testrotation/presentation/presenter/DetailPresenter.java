@@ -11,6 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 @InjectViewState
 public class DetailPresenter extends MvpPresenter<DetailView> {
@@ -23,6 +24,13 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
         mCompositeDisposable = new CompositeDisposable();
     }
 
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        Timber.d("onFirstViewAttach: ");
+        getViewState().starLoadData();
+    }
+
     public void checkConnection(long storeId) {
         ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
@@ -32,7 +40,10 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                     if (isConnectedToInternet) {
                         getViewState().showConnectionSuccessToast();
                         loadProductInStore(storeId);
-                    } else getViewState().showConnectionFailedToast();
+                    } else {
+                        getViewState().showConnectionFailedToast();
+                        getViewState().stopLoadingProgress();
+                    }
                 });
     }
 
@@ -50,8 +61,10 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                 })
                 .doAfterTerminate(getViewState()::stopLoadingProgress)
                 .map(products -> new ProductDataMapper().transform(products))
-                .subscribe(
-                        getViewState()::onProductLoadSuccess,
+                .subscribe(productModels -> {
+                            getViewState().showProducts(productModels);
+                            getViewState().onProductLoadSuccess();
+                        },
                         throwable -> getViewState().onProductLoadError());
     }
 
