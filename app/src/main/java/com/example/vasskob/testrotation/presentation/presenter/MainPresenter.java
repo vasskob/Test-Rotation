@@ -29,16 +29,18 @@ public class MainPresenter extends MvpPresenter<MainView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Timber.d("onFirstViewAttach: ");
-        getViewState().starLoadData();
+        checkConnection();
     }
 
     public void checkConnection() {
+        Timber.d("onFirstViewAttach:2 ");
         ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(isConnectedToInternet -> {
                     if (isConnectedToInternet) {
                         if (!dataLoaded) {
+                            Timber.d("onFirstViewAttach:3 ");
                             getViewState().showConnectionSuccessToast();
                             loadShopList();
                         }

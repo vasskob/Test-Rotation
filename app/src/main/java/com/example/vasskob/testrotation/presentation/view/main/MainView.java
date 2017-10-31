@@ -1,6 +1,6 @@
 package com.example.vasskob.testrotation.presentation.view.main;
 
-import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.example.vasskob.testrotation.domain.model.Store;
 import com.example.vasskob.testrotation.presentation.view.common.BaseView;
@@ -9,10 +9,11 @@ import java.util.List;
 
 public interface MainView extends BaseView {
 
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void onShopLoadSuccess();
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void onShopLoadError();
+
     void showShopList(List<Store> storeModels);
 
-    @StateStrategyType(SkipStrategy.class)
-    void onShopLoadSuccess();
-    @StateStrategyType(SkipStrategy.class)
-    void onShopLoadError();
 }

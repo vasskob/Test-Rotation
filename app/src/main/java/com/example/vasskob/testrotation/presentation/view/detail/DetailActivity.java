@@ -58,6 +58,7 @@ public class DetailActivity extends BaseActivity implements DetailView {
 
         fetchIntent();
         initAdapter();
+        mPresenter.setStoreId(storeId);
     }
 
     private void fetchIntent() {
@@ -88,11 +89,6 @@ public class DetailActivity extends BaseActivity implements DetailView {
     @Override
     public void onProductLoadError() {
         showToast(R.string.products_load_err);
-    }
-
-    @Override
-    public void starLoadData() {
-        mPresenter.checkConnection(storeId);
     }
 
     @Override

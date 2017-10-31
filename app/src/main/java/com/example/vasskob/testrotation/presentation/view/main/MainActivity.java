@@ -92,11 +92,6 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
-    public void starLoadData() {
-        mPresenter.checkConnection();
-    }
-
-    @Override
     public void startLoadingProgress() {
         Timber.d("startLoadingProgress: ");
         pbLoading.setVisibility(View.VISIBLE);
@@ -120,7 +115,7 @@ public class MainActivity extends BaseActivity implements MainView {
             case R.id.item_update:
                 mAdapter.clearItems();
                 mPresenter.setDataLoadedFalse();
-                starLoadData();
+                mPresenter.checkConnection();
                 break;
             default:
                 return false;

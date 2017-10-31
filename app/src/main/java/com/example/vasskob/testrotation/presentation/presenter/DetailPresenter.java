@@ -3,7 +3,6 @@ package com.example.vasskob.testrotation.presentation.presenter;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.vasskob.testrotation.data.repository.ProductRepositoryImpl;
-
 import com.example.vasskob.testrotation.presentation.view.detail.DetailView;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
@@ -18,21 +17,27 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
 
     private final ProductRepositoryImpl mProductDataRepository;
     private CompositeDisposable mCompositeDisposable;
+
     private boolean dataLoaded;
+    private long storeId;
 
     public DetailPresenter(ProductRepositoryImpl productDataRepository) {
         mProductDataRepository = productDataRepository;
         mCompositeDisposable = new CompositeDisposable();
     }
 
+    public void setStoreId(long storeId) {
+        this.storeId = storeId;
+    }
+
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Timber.d("onFirstViewAttach: ");
-        getViewState().starLoadData();
+        checkConnection(storeId);
     }
 
-    public void checkConnection(long storeId) {
+    private void checkConnection(long storeId) {
         ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

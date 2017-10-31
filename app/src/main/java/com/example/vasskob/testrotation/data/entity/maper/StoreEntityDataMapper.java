@@ -5,7 +5,6 @@ import com.example.vasskob.testrotation.domain.model.Store;
 
 import io.reactivex.functions.Function;
 
-
 public class StoreEntityDataMapper implements Function<StoreEntity, Store> {
 
     @Override
