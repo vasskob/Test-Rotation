@@ -7,4 +7,6 @@
     <string name="connection_error">No internet connection!</string>
     <string name="connection_success">Connection established</string>
     <string name="update_menu_item">Update</string>
+    <string name="product_desc">Product image</string>
+    <string name="store_desc">Store image</string>
 </resources>

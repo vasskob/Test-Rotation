@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.vasskob.testrotation.R;
 import com.example.vasskob.testrotation.domain.model.Product;
 
@@ -74,6 +76,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productCategory.setText(String.format(Locale.US, "Category: %s", product.getPrimaryCategory()));
             Glide.with(context)
                     .load(product.getImageUrl())
+                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).placeholder(R.drawable.ic_food))
                     .into(productIcon);
         }
     }
