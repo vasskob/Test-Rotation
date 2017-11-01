@@ -1,15 +1,15 @@
 package com.example.vasskob.testrotation.presentation.common.view;
 
 import com.arellomobile.mvp.MvpView;
-import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
 
 public interface BaseView extends MvpView{
 
-    @StateStrategyType(SkipStrategy.class)
+    @StateStrategyType(OneExecutionStateStrategy.class)
     void showConnectionFailedToast();
-    @StateStrategyType(SkipStrategy.class)
+    @StateStrategyType(OneExecutionStateStrategy.class)
     void showConnectionSuccessToast();
 
     void startLoadingProgress();

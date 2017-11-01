@@ -17,6 +17,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private StoreRepositoryImpl mStoreDataRepository;
     private CompositeDisposable mCompositeDisposable;
+    private Disposable mNetworkDisposable;
+
     private boolean dataLoaded;
 
     public MainPresenter(StoreRepositoryImpl storeDataRepository) {
@@ -34,7 +36,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     public void checkConnection() {
         Timber.d("onFirstViewAttach:2 ");
-        ReactiveNetwork.observeInternetConnectivity()
+        mNetworkDisposable = ReactiveNetwork.observeInternetConnectivity()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(isConnectedToInternet -> {
@@ -72,8 +74,15 @@ public class MainPresenter extends MvpPresenter<MainView> {
         mCompositeDisposable.add(disposable);
     }
 
-    public void setDataLoadedFalse() {
+    public void clearConnectionCheck() {
         dataLoaded = false;
+        disposeNetwork();
+    }
+
+    private void disposeNetwork() {
+        if (!mNetworkDisposable.isDisposed()) {
+            mNetworkDisposable.dispose();
+        }
     }
 
     @Override
@@ -82,6 +91,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
             mCompositeDisposable.dispose();
             mCompositeDisposable.clear();
         }
+        disposeNetwork();
         super.onDestroy();
     }
 }

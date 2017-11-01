@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity implements MainView {
         switch (itemId) {
             case R.id.item_update:
                 mAdapter.clearItems();
-                mPresenter.setDataLoadedFalse();
+                mPresenter.clearConnectionCheck();
                 mPresenter.checkConnection();
                 break;
             default:
