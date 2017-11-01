@@ -1,4 +1,4 @@
-package com.example.vasskob.testrotation.presentation.view.main;
+package com.example.vasskob.testrotation.presentation.main.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,17 +13,17 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.PresenterType;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.vasskob.testrotation.R;
-import com.example.vasskob.testrotation.data.repository.StoreRepositoryImpl;
 import com.example.vasskob.testrotation.domain.model.Store;
-import com.example.vasskob.testrotation.presentation.view.common.Constants;
-import com.example.vasskob.testrotation.presentation.presenter.MainPresenter;
-import com.example.vasskob.testrotation.presentation.view.common.BaseActivity;
-import com.example.vasskob.testrotation.presentation.view.detail.DetailActivity;
-import com.example.vasskob.testrotation.presentation.view.main.adapter.StoreListAdapter;
+import com.example.vasskob.testrotation.presentation.common.BaseActivity;
+import com.example.vasskob.testrotation.presentation.common.Constants;
+import com.example.vasskob.testrotation.presentation.detail.view.DetailActivity;
+import com.example.vasskob.testrotation.presentation.main.presenter.MainPresenter;
+import com.example.vasskob.testrotation.presentation.main.adapter.StoreListAdapter;
 
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,14 +40,14 @@ public class MainActivity extends BaseActivity implements MainView {
     ProgressBar pbLoading;
 
     @Inject
-    StoreRepositoryImpl mStoreDataRepository;
+    Provider<MainPresenter> mPresenterProvider;
 
     @InjectPresenter(type = PresenterType.LOCAL)
     MainPresenter mPresenter;
 
     @ProvidePresenter(type = PresenterType.LOCAL)
     MainPresenter providePresenter() {
-        return new MainPresenter(mStoreDataRepository);
+        return mPresenterProvider.get();
     }
 
     private final StoreListAdapter.onStoreClickListener onClickListener = view -> {

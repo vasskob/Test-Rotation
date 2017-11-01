@@ -1,4 +1,4 @@
-package com.example.vasskob.testrotation.presentation.view.detail;
+package com.example.vasskob.testrotation.presentation.detail.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,16 +11,16 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.PresenterType;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.vasskob.testrotation.R;
-import com.example.vasskob.testrotation.data.repository.ProductRepositoryImpl;
 import com.example.vasskob.testrotation.domain.model.Product;
-import com.example.vasskob.testrotation.presentation.view.common.Constants;
-import com.example.vasskob.testrotation.presentation.presenter.DetailPresenter;
-import com.example.vasskob.testrotation.presentation.view.common.BaseActivity;
-import com.example.vasskob.testrotation.presentation.view.detail.adapter.ProductListAdapter;
+import com.example.vasskob.testrotation.presentation.common.BaseActivity;
+import com.example.vasskob.testrotation.presentation.common.Constants;
+import com.example.vasskob.testrotation.presentation.detail.adapter.ProductListAdapter;
+import com.example.vasskob.testrotation.presentation.detail.presenter.DetailPresenter;
 
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,14 +40,14 @@ public class DetailActivity extends BaseActivity implements DetailView {
     ProgressBar pbLoading;
 
     @Inject
-    ProductRepositoryImpl mProductDataRepository;
+    Provider<DetailPresenter> mPresenterProvider;
 
     @InjectPresenter(type = PresenterType.LOCAL)
     DetailPresenter mPresenter;
 
     @ProvidePresenter(type = PresenterType.LOCAL)
     DetailPresenter providePresenter() {
-        return new DetailPresenter(mProductDataRepository);
+        return mPresenterProvider.get();
     }
 
     @Override

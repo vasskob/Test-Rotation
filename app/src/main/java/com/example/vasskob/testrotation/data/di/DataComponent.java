@@ -26,9 +26,5 @@ public interface DataComponent {
         DataComponent build();
     }
 
-//    StoreRepository getStoreRepository();
-//
-//    ProductRepository getProductRepository();
-
     ApiInterface getApiInterface();
 }

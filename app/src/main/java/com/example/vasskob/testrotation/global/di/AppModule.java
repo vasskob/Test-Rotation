@@ -2,7 +2,7 @@ package com.example.vasskob.testrotation.global.di;
 
 import android.content.Context;
 
-import com.example.vasskob.testrotation.MyApplication;
+import com.example.vasskob.testrotation.global.MyApplication;
 
 import javax.inject.Singleton;
 
