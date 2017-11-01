@@ -1,4 +1,4 @@
-package com.example.vasskob.testrotation.presentation.view.common;
+package com.example.vasskob.testrotation.presentation.common;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.example.vasskob.testrotation.presentation.view.common;
+package com.example.vasskob.testrotation.presentation.common;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;

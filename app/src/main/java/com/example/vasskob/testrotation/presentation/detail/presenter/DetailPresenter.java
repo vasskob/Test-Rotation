@@ -1,9 +1,9 @@
-package com.example.vasskob.testrotation.presentation.presenter;
+package com.example.vasskob.testrotation.presentation.detail.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.vasskob.testrotation.data.repository.ProductRepositoryImpl;
-import com.example.vasskob.testrotation.presentation.view.detail.DetailView;
+import com.example.vasskob.testrotation.presentation.detail.view.DetailView;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

@@ -1,4 +1,4 @@
-package com.example.vasskob.testrotation.presentation.view.detail.adapter;
+package com.example.vasskob.testrotation.presentation.detail.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
