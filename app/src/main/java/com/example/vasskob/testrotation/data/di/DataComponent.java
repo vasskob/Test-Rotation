@@ -1,6 +1,6 @@
 package com.example.vasskob.testrotation.data.di;
 
-import com.example.vasskob.testrotation.MyApplication;
+import com.example.vasskob.testrotation.global.MyApplication;
 import com.example.vasskob.testrotation.data.api.ApiInterface;
 import com.example.vasskob.testrotation.global.di.AppModule;
 

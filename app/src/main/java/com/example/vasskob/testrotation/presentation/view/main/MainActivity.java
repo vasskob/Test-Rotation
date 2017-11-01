@@ -15,7 +15,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.vasskob.testrotation.R;
 import com.example.vasskob.testrotation.data.repository.StoreRepositoryImpl;
 import com.example.vasskob.testrotation.domain.model.Store;
-import com.example.vasskob.testrotation.global.Constants;
+import com.example.vasskob.testrotation.presentation.view.common.Constants;
 import com.example.vasskob.testrotation.presentation.presenter.MainPresenter;
 import com.example.vasskob.testrotation.presentation.view.common.BaseActivity;
 import com.example.vasskob.testrotation.presentation.view.detail.DetailActivity;

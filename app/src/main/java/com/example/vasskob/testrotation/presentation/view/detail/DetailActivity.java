@@ -13,7 +13,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.vasskob.testrotation.R;
 import com.example.vasskob.testrotation.data.repository.ProductRepositoryImpl;
 import com.example.vasskob.testrotation.domain.model.Product;
-import com.example.vasskob.testrotation.global.Constants;
+import com.example.vasskob.testrotation.presentation.view.common.Constants;
 import com.example.vasskob.testrotation.presentation.presenter.DetailPresenter;
 import com.example.vasskob.testrotation.presentation.view.common.BaseActivity;
 import com.example.vasskob.testrotation.presentation.view.detail.adapter.ProductListAdapter;

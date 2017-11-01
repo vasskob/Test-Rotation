@@ -1,8 +1,9 @@
-package com.example.vasskob.testrotation;
+package com.example.vasskob.testrotation.global;
 
 import android.app.Activity;
 import android.app.Application;
 
+import com.example.vasskob.testrotation.BuildConfig;
 import com.example.vasskob.testrotation.data.di.DaggerDataComponent;
 import com.example.vasskob.testrotation.data.di.DataComponent;
 import com.example.vasskob.testrotation.global.di.AppComponent;
