@@ -21,7 +21,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class NetworkModule {
+class NetworkModule {
 
     private static final int DELAY_TIME_MS = 5000;
 
@@ -34,6 +34,7 @@ public class NetworkModule {
                 HttpLoggingInterceptor.Level.BODY :
                 HttpLoggingInterceptor.Level.NONE);
 
+        // Need only for testing device rotation during data loading
         Interceptor delayInterceptor = chain -> {
             SystemClock.sleep(DELAY_TIME_MS);
             return chain.proceed(chain.request());
