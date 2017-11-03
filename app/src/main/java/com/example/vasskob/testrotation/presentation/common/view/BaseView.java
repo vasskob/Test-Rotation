@@ -8,9 +8,9 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 public interface BaseView extends MvpView{
 
     @StateStrategyType(OneExecutionStateStrategy.class)
-    void showConnectionFailedToast();
+    void onConnectionError();
     @StateStrategyType(OneExecutionStateStrategy.class)
-    void showConnectionSuccessToast();
+    void onConnectionSuccess();
 
     void startLoadingProgress();
     void stopLoadingProgress();

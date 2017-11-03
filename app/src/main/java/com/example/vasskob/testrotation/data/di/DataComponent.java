@@ -1,7 +1,8 @@
 package com.example.vasskob.testrotation.data.di;
 
+import com.example.vasskob.testrotation.domain.repository.ProductRepository;
+import com.example.vasskob.testrotation.domain.repository.StoreRepository;
 import com.example.vasskob.testrotation.global.MyApplication;
-import com.example.vasskob.testrotation.data.api.ApiInterface;
 import com.example.vasskob.testrotation.global.di.AppModule;
 
 import javax.inject.Singleton;
@@ -26,5 +27,7 @@ public interface DataComponent {
         DataComponent build();
     }
 
-    ApiInterface getApiInterface();
+    StoreRepository getStoreRepository();
+
+    ProductRepository getProductRepository();
 }

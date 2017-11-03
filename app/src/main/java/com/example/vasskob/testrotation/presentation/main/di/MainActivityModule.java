@@ -1,6 +1,6 @@
 package com.example.vasskob.testrotation.presentation.main.di;
 
-import com.example.vasskob.testrotation.data.repository.StoreRepositoryImpl;
+import com.example.vasskob.testrotation.domain.repository.StoreRepository;
 import com.example.vasskob.testrotation.presentation.main.presenter.MainPresenter;
 
 import dagger.Module;
@@ -11,7 +11,7 @@ public class MainActivityModule {
 
     @Provides
     @MainScope
-    MainPresenter provideMainPresenter(StoreRepositoryImpl repository) {
+    MainPresenter provideMainPresenter(StoreRepository repository) {
         return new MainPresenter(repository);
     }
 }

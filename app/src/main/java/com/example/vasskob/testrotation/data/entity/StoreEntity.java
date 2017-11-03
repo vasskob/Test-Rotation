@@ -4,22 +4,33 @@ import com.google.gson.annotations.SerializedName;
 
 public class StoreEntity {
 
-    // // TODO: 03/11/17 always add @SerializedName to be sure that proguard don't screw your code
+    @SerializedName("id")
     private long id;
+    @SerializedName("name")
     private String name;
     @SerializedName("address_line_1")
     private String address1;
     @SerializedName("address_line_2")
     private String address2;
+    @SerializedName("city")
     private String city;
+    @SerializedName("telephone")
     private String telephone;
+    @SerializedName("latitude")
     private double latitude;
+    @SerializedName("longitude")
     private double longitude;
+    @SerializedName("hasWheelchairAccessability")
     private boolean hasWheelchairAccessability;
+    @SerializedName("hasBilingualServices")
     private boolean hasBilingualServices;
+    @SerializedName("hasTastingBar")
     private boolean hasTastingBar;
+    @SerializedName("hasBeerColdRoom")
     private boolean hasBeerColdRoom;
+    @SerializedName("hasVintagesCorner")
     private boolean hasVintagesCorner;
+    @SerializedName("hasParking")
     private boolean hasParking;
 
     public StoreEntity(long id, String name, String address1, String address2, String city) {

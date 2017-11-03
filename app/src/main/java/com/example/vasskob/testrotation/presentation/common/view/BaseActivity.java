@@ -34,11 +34,11 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
         toast.show();
     }
 
-    public void showConnectionFailedToast() {
+    public void onConnectionError() {
         showToast(R.string.connection_error);
     }
 
-    public void showConnectionSuccessToast() {
+    public void onConnectionSuccess() {
         showToast(R.string.connection_success);
     }
 

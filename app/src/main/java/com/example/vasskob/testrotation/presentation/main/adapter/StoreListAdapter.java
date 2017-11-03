@@ -18,7 +18,6 @@ import butterknife.OnClick;
 
 public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.StoreViewHolder> {
 
-    private static final String COMMA = ", ";
     private List<Store> mStores = new ArrayList<>();
     private final onStoreClickListener listener;
 
@@ -80,8 +79,7 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.Stor
 
         void populate(Store store) {
             storeName.setText(store.getName());
-            // TODO: 03/11/17 '%s%s%s' WTF???
-            storeLocation.setText(String.format("%s%s%s", store.getCity(), COMMA, store.getAddress1()));
+            storeLocation.setText(String.format("%s, %s", store.getCity(), store.getAddress1()));
         }
     }
 

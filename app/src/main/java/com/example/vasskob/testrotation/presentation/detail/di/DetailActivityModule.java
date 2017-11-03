@@ -1,6 +1,6 @@
 package com.example.vasskob.testrotation.presentation.detail.di;
 
-import com.example.vasskob.testrotation.data.repository.ProductRepositoryImpl;
+import com.example.vasskob.testrotation.domain.repository.ProductRepository;
 import com.example.vasskob.testrotation.presentation.detail.presenter.DetailPresenter;
 
 import dagger.Module;
@@ -11,8 +11,7 @@ public class DetailActivityModule {
 
     @Provides
     @DetailScope
-        // TODO: 03/11/17 why not abstraction ProductRepository?
-    DetailPresenter provideDetailPresenter(ProductRepositoryImpl repository) {
+    DetailPresenter provideDetailPresenter(ProductRepository repository) {
         return new DetailPresenter(repository);
     }
 }

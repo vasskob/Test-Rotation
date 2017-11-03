@@ -2,7 +2,7 @@ package com.example.vasskob.testrotation.presentation.main.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.example.vasskob.testrotation.data.repository.StoreRepositoryImpl;
+import com.example.vasskob.testrotation.domain.repository.StoreRepository;
 import com.example.vasskob.testrotation.presentation.main.view.MainView;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
@@ -15,13 +15,13 @@ import timber.log.Timber;
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
 
-    private StoreRepositoryImpl mStoreDataRepository;
+    private StoreRepository mStoreDataRepository;
     private CompositeDisposable mCompositeDisposable;
     private Disposable mNetworkDisposable;
 
     private boolean dataLoaded;
 
-    public MainPresenter(StoreRepositoryImpl storeDataRepository) {
+    public MainPresenter(StoreRepository storeDataRepository) {
         this.mStoreDataRepository = storeDataRepository;
         mCompositeDisposable = new CompositeDisposable();
         Timber.d("checkConnection: " + getViewState());
@@ -43,11 +43,11 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     if (isConnectedToInternet) {
                         if (!dataLoaded) {
                             Timber.d("onFirstViewAttach:3 ");
-                            getViewState().showConnectionSuccessToast();
+                            getViewState().onConnectionSuccess();
                             loadShopList();
                         }
                     } else {
-                        getViewState().showConnectionFailedToast();
+                        getViewState().onConnectionError();
                         getViewState().stopLoadingProgress();
                     }
                 });
@@ -74,7 +74,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
         mCompositeDisposable.add(disposable);
     }
 
-    // TODO: 03/11/17 you can do this before each check authomaticaly
     public void clearConnectionCheck() {
         dataLoaded = false;
         disposeNetwork();

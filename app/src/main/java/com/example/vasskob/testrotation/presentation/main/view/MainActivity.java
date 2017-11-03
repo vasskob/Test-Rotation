@@ -15,10 +15,9 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.vasskob.testrotation.R;
 import com.example.vasskob.testrotation.domain.model.Store;
 import com.example.vasskob.testrotation.presentation.common.view.BaseActivity;
-import com.example.vasskob.testrotation.presentation.common.Constants;
 import com.example.vasskob.testrotation.presentation.detail.view.DetailActivity;
-import com.example.vasskob.testrotation.presentation.main.presenter.MainPresenter;
 import com.example.vasskob.testrotation.presentation.main.adapter.StoreListAdapter;
+import com.example.vasskob.testrotation.presentation.main.presenter.MainPresenter;
 
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class MainActivity extends BaseActivity implements MainView {
         int position = rvStores.getChildAdapterPosition(view);
         long storeId = mAdapter.getItem(position).getId();
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(Constants.STORE_ID, storeId);
+        intent.putExtra(DetailActivity.STORE_ID, storeId);
         startActivity(intent);
     };
 
@@ -88,7 +87,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public void onShopLoadError() {
-        showToast(R.string.shop_load_err);
+        showToast(R.string.store_load_err);
     }
 
     @Override

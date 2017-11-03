@@ -13,7 +13,6 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.vasskob.testrotation.R;
 import com.example.vasskob.testrotation.domain.model.Product;
 import com.example.vasskob.testrotation.presentation.common.view.BaseActivity;
-import com.example.vasskob.testrotation.presentation.common.Constants;
 import com.example.vasskob.testrotation.presentation.detail.adapter.ProductListAdapter;
 import com.example.vasskob.testrotation.presentation.detail.presenter.DetailPresenter;
 
@@ -28,6 +27,8 @@ import timber.log.Timber;
 
 
 public class DetailActivity extends BaseActivity implements DetailView {
+
+    public static final String STORE_ID = "storeId";
 
     private long storeId;
 
@@ -64,7 +65,7 @@ public class DetailActivity extends BaseActivity implements DetailView {
     private void fetchIntent() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            storeId = extras.getLong(Constants.STORE_ID);
+            storeId = extras.getLong(STORE_ID);
         }
     }
 

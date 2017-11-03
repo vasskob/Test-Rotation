@@ -1,13 +1,21 @@
 <resources>
-    <!--todo group by screens -->
+
+    <!-- APP -->
     <string name="app_name">TestRotation</string>
-    <string name="products_load_success">Products loaded successfully</string>
-    <string name="products_load_err">Products load Error</string>
-    <string name="stores_load_success">Stores loaded successfully</string>
-    <string name="shop_load_err">Stores Load Error</string>
+
+    <!-- COMMON -->
     <string name="connection_error">No internet connection!</string>
     <string name="connection_success">Connection established</string>
+
+    <!-- STORES SCREEN -->
+    <string name="stores_load_success">Stores loaded successfully</string>
+    <string name="store_load_err">Stores Load Error</string>
     <string name="update_menu_item">Update</string>
-    <string name="product_desc">Product image</string>
     <string name="store_desc">Store image</string>
+
+    <!-- PRODUCTS SCREEN -->
+    <string name="products_load_success">Products loaded successfully</string>
+    <string name="products_load_err">Products load Error</string>
+    <string name="product_desc">Product image</string>
+
 </resources>
