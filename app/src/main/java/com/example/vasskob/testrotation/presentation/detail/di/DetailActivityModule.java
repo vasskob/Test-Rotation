@@ -11,6 +11,7 @@ public class DetailActivityModule {
 
     @Provides
     @DetailScope
+        // TODO: 03/11/17 why not abstraction ProductRepository?
     DetailPresenter provideDetailPresenter(ProductRepositoryImpl repository) {
         return new DetailPresenter(repository);
     }

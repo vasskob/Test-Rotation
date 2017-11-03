@@ -1,4 +1,5 @@
 <resources>
+    <!--todo group by screens -->
     <string name="app_name">TestRotation</string>
     <string name="products_load_success">Products loaded successfully</string>
     <string name="products_load_err">Products load Error</string>

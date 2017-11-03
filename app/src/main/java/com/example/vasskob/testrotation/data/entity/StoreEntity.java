@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class StoreEntity {
 
+    // // TODO: 03/11/17 always add @SerializedName to be sure that proguard don't screw your code
     private long id;
     private String name;
     @SerializedName("address_line_1")

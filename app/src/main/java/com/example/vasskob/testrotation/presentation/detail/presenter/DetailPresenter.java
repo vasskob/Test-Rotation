@@ -49,6 +49,9 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                             loadProductInStore(storeId);
                         }
                     } else {
+                        // TODO: 03/11/17 better displayConnectionError or something like that
+                        // (now you display toast, but later it can be dialog or something else)
+                        // your view should be abstract
                         getViewState().showConnectionFailedToast();
                         getViewState().stopLoadingProgress();
                     }
@@ -79,6 +82,7 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
     @Override
     public void onDestroy() {
         if (!mCompositeDisposable.isDisposed()) {
+            // TODO: 03/11/17 why both? check the documentation
             mCompositeDisposable.dispose();
             mCompositeDisposable.clear();
         }

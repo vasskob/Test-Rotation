@@ -74,6 +74,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
         mCompositeDisposable.add(disposable);
     }
 
+    // TODO: 03/11/17 you can do this before each check authomaticaly
     public void clearConnectionCheck() {
         dataLoaded = false;
         disposeNetwork();
